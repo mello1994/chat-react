@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 function Copyright() {
   return (
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -39,8 +40,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn({setName}) {
   const classes = useStyles();
+  const [disabled, setDisabled] = useState(true);
+  const[string, setString] = useState('');
+
+  useEffect(() => {
+    setDisabled(string === '');
+  }, [string]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,13 +66,18 @@ export default function SignIn() {
             label="ニックネーム"
             type="text"
             id="name"
+            onChange={(e) => setString(e.target.value)}
           />
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={disabled}
+            onClick={() => {
+              setName({string})
+            }}
           >
             はじめる
           </Button>
