@@ -69,7 +69,8 @@ export default function SignIn({setName}) {
             id="name"
             onChange={(e) => setString(e.target.value)}
             onKeyDown={(e) => {
-              if(e.key === 'Enter' && {isComposed}){
+              if(isComposed) return;
+              if(e.key === 'Enter'){
                 setName(e.target.value);
                 e.preventDefault();
               }
